@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
  * @author yunfeng
  * @since 2019-11-18
  */
-@Component
+@Component("imageValidateCodeProcessor")
 public class ImageCodeProcessor extends AbstractValidateCodeProcessor<ImageCode> {
 
     /**

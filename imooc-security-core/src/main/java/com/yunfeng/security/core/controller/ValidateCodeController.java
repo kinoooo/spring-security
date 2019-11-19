@@ -1,6 +1,8 @@
 package com.yunfeng.security.core.controller;
 
-import com.yunfeng.security.core.validate.ValidateProcessor;
+import com.yunfeng.security.core.constants.SecurityConstants;
+import com.yunfeng.security.core.validate.ValidateCodeProcessorHolder;
+import com.yunfeng.security.core.validate.ValidateCodeProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,7 +11,6 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 /**
  * <p>
@@ -23,15 +24,20 @@ import java.util.Map;
 public class ValidateCodeController {
 
     @Autowired
-    private Map<String, ValidateProcessor> validateProcessor;
+    private ValidateCodeProcessorHolder validateCodeProcessorHolder;
 
-
-
-    @GetMapping("/code/{type}")
-    public void createImageCode(HttpServletRequest request,
-                                HttpServletResponse response,
-                                @PathVariable String type) throws Exception {
-        validateProcessor.get(type + "CodeProcessor").create(new ServletWebRequest(request, response));
+    /**
+     * 创建验证码，根据验证码类型不同，调用不同的 {@link ValidateCodeProcessor}接口实现
+     *
+     * @param request
+     * @param response
+     * @param type
+     * @throws Exception
+     */
+    @GetMapping(SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/{type}")
+    public void createCode(HttpServletRequest request, HttpServletResponse response, @PathVariable String type)
+            throws Exception {
+        validateCodeProcessorHolder.findValidateCodeProcessor(type).create(new ServletWebRequest(request, response));
     }
 
 

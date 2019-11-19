@@ -24,7 +24,7 @@ import java.util.Random;
  * @since 2019-11-16
  */
 @Data
-@Component("smsCodeGenerator")
+@Component("smsValidateCodeGenerator")
 public class SmsCodeGenerator implements ValidateCodeGenerator {
 
     @Autowired

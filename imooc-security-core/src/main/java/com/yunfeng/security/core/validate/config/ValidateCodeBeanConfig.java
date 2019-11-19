@@ -1,4 +1,4 @@
-package com.yunfeng.security.core.validate.code.config;
+package com.yunfeng.security.core.validate.config;
 
 import com.yunfeng.security.core.properties.SecurityProperties;
 import com.yunfeng.security.core.validate.code.ValidateCodeGenerator;
@@ -29,8 +29,8 @@ public class ValidateCodeBeanConfig {
      * @return
      */
     @Bean
-    @ConditionalOnMissingBean(name = "imageCodeGenerator")
-    public ValidateCodeGenerator imageCodeGenerator() {
+    @ConditionalOnMissingBean(name = "imageValidateCodeGenerator")
+    public ValidateCodeGenerator imageValidateCodeGenerator() {
         ImageCodeGenerator codeGenerator = new ImageCodeGenerator();
         codeGenerator.setSecurityProperties(securityProperties);
         return codeGenerator;
