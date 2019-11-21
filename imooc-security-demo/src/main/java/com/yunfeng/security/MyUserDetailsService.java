@@ -1,4 +1,4 @@
-package com.yunfeng.security.browser;
+package com.yunfeng.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +7,11 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.social.security.SocialUser;
+import org.springframework.social.security.SocialUserDetails;
+import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 
 /**
@@ -24,7 +25,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Component
-public class MyUserDetailsService implements UserDetailsService {
+public class MyUserDetailsService implements UserDetailsService, SocialUserDetailsService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -33,10 +34,24 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // 根据用户名查找用户信息
-        log.info("登录用户名:" + username);
+        log.info("表单登录用户名:" + username);
+        return buildUser(username);
+    }
+
+    @Override
+    public SocialUserDetails loadUserByUserId(String userId) throws UsernameNotFoundException {
+        log.info("社交登录用户Id:" + userId);
         String password = passwordEncoder.encode("123456");
-        return new User(username, password,
+        return new SocialUser(userId, password,
+                true,true,true,true,
+                AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+
+    }
+
+    private SocialUserDetails buildUser(String username) {
+        // 根据用户名查找用户信息
+        String password = passwordEncoder.encode("123456");
+        return new SocialUser(username, password,
                 true,true,true,true,
                 AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
     }

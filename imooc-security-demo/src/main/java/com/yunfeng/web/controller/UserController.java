@@ -3,12 +3,16 @@ package com.yunfeng.web.controller;
 import com.yunfeng.dto.User;
 import com.yunfeng.exception.UserNotExistException;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.ServletWebRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
@@ -23,6 +27,9 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    @Autowired
+    private ProviderSignInUtils providerSignInUtils;
 
     @GetMapping("/me")
     public Object getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
@@ -50,5 +57,13 @@ public class UserController {
         System.out.println(user.getBirthday());
         user.setId(1L);
         return user;
+    }
+
+    @PostMapping("/register")
+    public void register(User user, HttpServletRequest request) {
+        //不管是注册用户还是绑定用户，都会拿到一个用户唯一标识。
+        String userId = user.getUsername();
+        providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
+
     }
 }

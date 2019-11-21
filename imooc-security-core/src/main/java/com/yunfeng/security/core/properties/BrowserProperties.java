@@ -1,5 +1,6 @@
 package com.yunfeng.security.core.properties;
 
+import com.yunfeng.security.core.constants.SecurityConstants;
 import lombok.Data;
 
 /**
@@ -13,7 +14,9 @@ import lombok.Data;
 @Data
 public class BrowserProperties {
 
-    private String loginPage = "/imooc-signIn.html";
+    private String loginPage = SecurityConstants.DEFAULT_LOGIN_PAGE_URL;
+
+    private String signUpUrl = "/imooc-signUp.html";
 
     private LoginResponseType loginType = LoginResponseType.JSON;
     /**
