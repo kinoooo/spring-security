@@ -65,7 +65,8 @@ public abstract class AbstractValidateCodeProcessor<T extends ValidateCode> impl
      * 保存校验码
      */
     private void save(ServletWebRequest request, T validateCode) {
-        sessionStrategy.setAttribute(request, getSessionKey(request), validateCode);
+        ValidateCode code = new ValidateCode(validateCode.getCode(), validateCode.getExpireTime());
+        sessionStrategy.setAttribute(request, getSessionKey(request), code);
     }
 
 

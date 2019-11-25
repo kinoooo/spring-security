@@ -2,12 +2,13 @@ package com.yunfeng.security.core.validate.code;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
 @Data
-public class ValidateCode {
-	
+public class ValidateCode implements Serializable {
+
 	private String code;
 	
 	private LocalDateTime expireTime;

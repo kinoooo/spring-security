@@ -17,6 +17,12 @@
             <artifactId>imooc-security-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session</artifactId>
+            <version>1.2.0.RELEASE</version>
+        </dependency>
     </dependencies>
 
 
