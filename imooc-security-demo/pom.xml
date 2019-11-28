@@ -13,12 +13,22 @@
     <artifactId>imooc-security-demo</artifactId>
     <dependencies>
 
+        <!--<dependency>-->
+        <!--    <groupId>com.yunfeng.security</groupId>-->
+        <!--    <artifactId>imooc-security-browser</artifactId>-->
+        <!--    <version>0.0.1-SNAPSHOT</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.yunfeng.security</groupId>
-            <artifactId>imooc-security-browser</artifactId>
+            <artifactId>imooc-security-app</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
 
     </dependencies>
 

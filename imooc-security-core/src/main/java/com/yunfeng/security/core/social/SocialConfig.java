@@ -40,6 +40,9 @@ public class SocialConfig extends SocialConfigurerAdapter {
     @Autowired(required = false)
     private ConnectionSignUp connectionSignUp;
 
+    @Autowired(required = false)
+    private SocialAuthenticationFilterPostProcessor socialAuthenticationFilterPostProcessor;
+
     @Override
     public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
         JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource,
@@ -56,6 +59,7 @@ public class SocialConfig extends SocialConfigurerAdapter {
     public SpringSocialConfigurer imoocSocialSecurityConfig() {
         String filterProcessesUrl = securityProperties.getSocial().getFilterProcessesUrl();
         ImoocSpringSocialConfigurer configurer = new ImoocSpringSocialConfigurer(filterProcessesUrl);
+        configurer.setSocialAuthenticationFilterPostProcessor(socialAuthenticationFilterPostProcessor);
         configurer.signupUrl(securityProperties.getBrowser().getSignUpUrl());
         return configurer;
     }

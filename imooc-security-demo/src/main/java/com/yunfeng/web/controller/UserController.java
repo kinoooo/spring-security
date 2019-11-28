@@ -2,8 +2,14 @@ package com.yunfeng.web.controller;
 
 import com.yunfeng.dto.User;
 import com.yunfeng.exception.UserNotExistException;
+import com.yunfeng.security.core.properties.SecurityProperties;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +20,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 
 /**
  * <p>
@@ -26,15 +33,31 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/user")
+@Slf4j
 public class UserController {
 
     @Autowired
     private ProviderSignInUtils providerSignInUtils;
 
+    @Autowired
+    private SecurityProperties securityProperties;
+
     @GetMapping("/me")
-    public Object getCurrentUser(@AuthenticationPrincipal UserDetails userDetails) {
-        return userDetails;
-        //return SecurityContextHolder.getContext().getAuthentication();
+    public Object getCurrentUser(Authentication authentication, HttpServletRequest request) throws UnsupportedEncodingException {
+
+        String authorization = request.getHeader("Authorization");
+        String token = StringUtils.substringAfter(authorization, "bearer ");
+        String jwtSigningKey = securityProperties.getOauth2().getJwtSigningKey();
+        // 生成的时候使用的是 org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter
+        // 源码里面把signingkey变成utf8了
+        // JwtAccessTokenConverter类，解析出来是一个map
+        // 所以这个自带的JwtAccessTokenConverter对象也是可以直接用来解析的
+        byte[] bytes = jwtSigningKey.getBytes("utf-8");
+        Claims body = Jwts.parser().setSigningKey(bytes).parseClaimsJws(token).getBody();
+        String company = (String) body.get("company");
+        log.info("公司名称:{}",company);
+        return body;
+
     }
 
     @GetMapping("/{id:\\d+}")

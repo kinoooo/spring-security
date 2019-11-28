@@ -1,7 +1,7 @@
 package com.yunfeng.security.browser.controller;
 
 import com.yunfeng.security.browser.support.SimpleResponse;
-import com.yunfeng.security.browser.support.SocialUserInfo;
+import com.yunfeng.security.core.social.SocialUserInfo;
 import com.yunfeng.security.core.constants.SecurityConstants;
 import com.yunfeng.security.core.properties.SecurityProperties;
 import lombok.extern.slf4j.Slf4j;

@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * <p>
- *
+ * processor 适配器，适配哪种processor
  * </p>
  *
  * @author yunfeng

@@ -1,4 +1,4 @@
-package com.yunfeng.security.browser.support;
+package com.yunfeng.security.core.social;
 
 import lombok.Data;
 
